@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
-const { Users } = require("../models");
+const { Tokens, Users } = require("../models");
 const router = express.Router();
 
 // 회원가입
@@ -57,21 +57,31 @@ router.post("/signup", async (req, res) => {
 // 로그인 API
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = await Users.findOne({ where: { email } });
 
   try {
+    const user = await Users.findOne({ where: { email } });
+    const savedTokenUser = await Tokens.findOne({});
+
     if (!user || password !== user.password) {
-      res.status(400).json({
+      return res.status(400).json({
         errorMessage: "이메일 또는 패스워드가 틀렸습니다.",
       });
-      return;
     }
+    // 리프레시 토큰 생성
+    const refreshToken = jwt.sign({}, process.env.JWT_SECRET_KEY, { expiresIn: "1m" });
+    if (savedTokenUser) {
+      await Tokens.destroy({ where: {} });
+    }
+    await Tokens.create({ tokenId: refreshToken, UserId: user.userId });
 
-    const token = jwt.sign({ userId: user.userId }, "customized-secret-key", { expiresIn: "30m" });
+    // 액세스 토큰 생성
+    const accessToken = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "30m",
+    });
+    res.cookie("authorization", `Bearer ${accessToken}`);
 
-    res.cookie("authorization", `Bearer ${token}`);
     res.status(200).json({
-      token,
+      accessToken,
       message: "로그인에 성공하였습니다.",
     });
   } catch (err) {
@@ -79,6 +89,15 @@ router.post("/login", async (req, res) => {
       message: "로그인에 실패하였습니다.",
     });
   }
+});
+
+router.delete("/logout", async (req, res) => {
+  await Tokens.destroy({ where: {} });
+  res.clearCookie("authorization");
+
+  res.status(200).json({
+    message: "로그아웃 되었습니다.",
+  });
 });
 
 module.exports = router;
