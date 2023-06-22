@@ -91,6 +91,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// 로그아웃 기능
 router.delete("/logout", async (req, res) => {
   await Tokens.destroy({ where: {} });
   res.clearCookie("authorization");
