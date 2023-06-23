@@ -8,9 +8,6 @@
 ### API 명세서 링크
 https://sh-9403.notion.site/f035d3df19484ae88e79de6c35744086?v=3f29cf9665ca43019b413297313971dc&pvs=4
 
-**ERD**
-[![ERD]([[[https://cdn.pixabay.com/photo/2019/03/13/08/29/cat-4052454_1280.jpg](https://file.notion.so/f/s/c763debc-29e6-4211-9adc-c9c58e5a1c3e/drawSQL-personal-export-2023-06-23_(1).png?id=6df04b20-650d-4887-abfd-4680fac10b38&table=block&spaceId=0f08c169-f0d5-4837-ab2d-83e1fc75ee5e&expirationTimestamp=1687602155372&signature=lIJcLnGES-V7mjT1X_q-6arocWWWMY32FNpzQSWWrgU&downloadName=drawSQL-personal-export-2023-06-23+%281%29.png)](https://www.notion.so/sh-9403/B-7-S-A-5a2fa1698a4c4f969b640ae0039efd86?pvs=4#6df04b20650d4887abfd4680fac10b38)](https://velog.velcdn.com/images/sh_0317/post/ffb1b9c8-58f4-4d2f-968e-ee43b4c07311/image.png))](https://velog.velcdn.com/images/sh_0317/post/ffb1b9c8-58f4-4d2f-968e-ee43b4c07311/image.png)
-
 **<1. 회원가입 API>**
 - 닉네임은 최소 3자 이상, 특수문자 및 공백 사용불가
 - 비밀번호는 최소 4자 이상, 닉네임과 같은 값이 포함될 수 없음
