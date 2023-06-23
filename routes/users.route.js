@@ -146,7 +146,7 @@ router.post("/switchAccount/:userId", async (req, res) => {
       res.cookie("authorization", `Bearer ${accessToken}`);
       return res.status(200).json({
         accessToken,
-        message: `${current.userId} Account로 로그인 되었습니다.`,
+        message: `${current.nickname} Account로 로그인 되었습니다.`,
       });
     } catch (err) {
       if (err.name === "TokenExpiredError") {
@@ -164,11 +164,14 @@ router.post("/switchAccount/:userId", async (req, res) => {
 });
 
 // 로그아웃 기능
-router.delete("/logout", async (req, res) => {
+router.delete("/logout/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const current = await Users.findOne({ where: { userId } });
+
   res.clearCookie("authorization");
-  await Tokens.destroy({ where: { UserId: userId } });
+  await Tokens.destroy({ where: { UserId: current.userId } });
   return res.status(200).json({
-    message: "로그아웃 되었습니다.",
+    message: `${current.nickname}님 로그아웃 되었습니다.`,
   });
 });
 
