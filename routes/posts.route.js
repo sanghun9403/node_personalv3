@@ -8,8 +8,7 @@ const router = express.Router();
 // 회원가입 후 로그인을 했을때만 생성 가능
 router.post("/posts", authMiddleware, async (req, res) => {
   try {
-    const { userId } = res.locals.user;
-    const nickname = res.locals.userNickname;
+    const userId = res.locals.user;
 
     const { title, content } = req.body;
 
@@ -21,15 +20,15 @@ router.post("/posts", authMiddleware, async (req, res) => {
     }
 
     const createPosts = await Posts.create({
-      UserId: userId,
-      Nickname: nickname,
+      UserId: userId.userId,
+      Nickname: userId.nickname,
       title,
       content,
     });
 
     res.status(201).json({ message: "게시글 생성완료" });
   } catch (err) {
-    res.status(412).json({
+    return res.status(412).json({
       message: "데이터 형식이 올바르지 않습니다",
     });
   }
@@ -51,7 +50,7 @@ router.get("/posts", async (req, res) => {
       showPost: showPost,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "게시글 조회에 실패하였습니다.",
     });
   }
@@ -73,7 +72,7 @@ router.get("/posts/:postId", async (req, res) => {
       Detail: result,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "게시글 조회에 실패하였습니다.",
     });
   }
@@ -98,7 +97,7 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
         { title, content },
         { where: { [Op.and]: [{ postId }, { UserId: userId }] } }
       );
-      res.status(201).json({
+      return res.status(201).json({
         message: "게시글 수정 완료",
         Detail: {
           title: modifyPost.title,
@@ -108,7 +107,7 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "게시글 수정에 실패하였습니다.",
     });
   }
@@ -134,7 +133,7 @@ router.delete("/posts/:postId", authMiddleware, async (req, res) => {
       res.status(204).json();
     }
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "게시글 삭제에 실패하였습니다.",
     });
   }
