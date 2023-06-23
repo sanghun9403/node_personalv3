@@ -8,6 +8,10 @@
 ### API 명세서 링크
 https://sh-9403.notion.site/f035d3df19484ae88e79de6c35744086?v=3f29cf9665ca43019b413297313971dc&pvs=4
 
+**ERD**
+![drawSQL-personal-export-2023-06-23 (1)](https://github.com/sanghun9403/node_personalv3/assets/132434240/2b1f4588-c691-484a-a49d-7169f63d584c)
+
+
 **<1. 회원가입 API>**
 - 닉네임은 최소 3자 이상, 특수문자 및 공백 사용불가
 - 비밀번호는 최소 4자 이상, 닉네임과 같은 값이 포함될 수 없음
